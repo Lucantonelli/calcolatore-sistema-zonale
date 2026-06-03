@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcolatore Sistema Zonale — Fotografia Analogica</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #141414;
+    --mid: #808080;
+    --light: #f0ede8;
+    --white: #fafaf8;
+    --accent: #c8a96e;
+    --accent2: #8b6f47;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --border: rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.015) 60px,
+      rgba(255,255,255,0.015) 61px
+    );
+    pointer-events: none;
+  }
+
+  .zone-bar-hero {
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .zone-bar-hero span {
+    flex: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 8vw, 80px);
+    font-weight: 600;
+    color: var(--white);
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 16px 32px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .hero-cta:hover {
+    background: #d4b87a;
+    transform: translateY(-2px);
+  }
+
+  .hero-cta svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.4s forwards;
+  }
+
+  .scroll-hint span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ZONE STRIP */
+  .zone-strip {
+    display: flex;
+    height: 80px;
+  }
+
+  .zone-strip-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-style: italic;
+  }
+
+  /* SECTION */
+  section {
+    padding: 100px 24px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: var(--black);
+  }
+
+  .section-text {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 580px;
+  }
+
+  /* FEATURES */
+  .features-bg {
+    background: var(--light);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .feature-card {
+    background: var(--white);
+    padding: 40px 36px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .feature-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.06);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 20px;
+  }
+
+  .feature-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--black);
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .feature-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+
+  /* ZONE SYSTEM SECTION */
+  .zone-visual {
+    margin-top: 60px;
+    display: flex;
+    gap: 2px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .zone-cell {
+    flex: 1;
+    padding: 20px 0 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .zone-cell-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .zone-cell-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* HOW TO */
+  .steps {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  .step-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* PRIVACY */
+  .privacy-bg {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  .privacy-bg .section-title { color: var(--white); }
+  .privacy-bg .section-text { color: rgba(255,255,255,0.5); }
+  .privacy-bg .section-label { color: var(--accent); }
+
+  .privacy-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 40px;
+    margin-top: 40px;
+    max-width: 680px;
+  }
+
+  .privacy-box p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .privacy-box p:last-child { margin-bottom: 0; }
+
+  .privacy-box strong {
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+
+  .footer-logo em { color: var(--accent); font-style: italic; }
+
+  .footer-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.1); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="zone-bar-hero">
+    <span style="background:#000"></span>
+    <span style="background:#171717"></span>
+    <span style="background:#2e2e2e"></span>
+    <span style="background:#464646"></span>
+    <span style="background:#5d5d5d"></span>
+    <span style="background:#808080"></span>
+    <span style="background:#a3a3a3"></span>
+    <span style="background:#bababa"></span>
+    <span style="background:#d1d1d1"></span>
+    <span style="background:#e8e8e8"></span>
+    <span style="background:#ffffff"></span>
+  </div>
+  <p class="hero-eyebrow">Fotografia Analogica · Sistema Zonale</p>
+  <h1 class="hero-title">Calcolatore<br><em>Sistema Zonale</em></h1>
+  <p class="hero-sub">Uno strumento completo per padroneggiare il Sistema Zonale di Ansel Adams. Calcola, converti e visualizza le zone tonali direttamente dal tuo smartphone.</p>
+  <a href="#" class="hero-cta">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>
+    Scarica su Google Play
+  </a>
+  <div class="scroll-hint">
+    <span>Scopri</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ZONA STRIP -->
+<div class="zone-strip">
+  <div class="zone-strip-item" style="background:#000;color:#fff">0</div>
+  <div class="zone-strip-item" style="background:#171717;color:#fff">I</div>
+  <div class="zone-strip-item" style="background:#2e2e2e;color:#fff">II</div>
+  <div class="zone-strip-item" style="background:#464646;color:#fff">III</div>
+  <div class="zone-strip-item" style="background:#5d5d5d;color:#fff">IV</div>
+  <div class="zone-strip-item" style="background:#808080;color:#fff">V</div>
+  <div class="zone-strip-item" style="background:#a3a3a3;color:#1a1a1a">VI</div>
+  <div class="zone-strip-item" style="background:#bababa;color:#1a1a1a">VII</div>
+  <div class="zone-strip-item" style="background:#d1d1d1;color:#1a1a1a">VIII</div>
+  <div class="zone-strip-item" style="background:#e8e8e8;color:#1a1a1a">IX</div>
+  <div class="zone-strip-item" style="background:#ffffff;color:#1a1a1a;border-right:1px solid #eee">X</div>
+</div>
+
+<!-- FEATURES -->
+<section class="features-bg">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Funzionalità</p>
+      <h2 class="section-title">Tutto ciò che serve<br>sul campo</h2>
+      <p class="section-text">Tre strumenti integrati per gestire ogni aspetto dell'esposizione secondo il Sistema Zonale.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-number">01</div>
+        <h3 class="feature-title">Zone System Calculator</h3>
+        <p class="feature-desc">Analizza le letture esposimetriche di ombre e luci. Scegli la modalità — priorità ombre, priorità luci o media — e visualizza graficamente la distribuzione tonale sulle 11 zone.</p>
+        <span class="feature-tag">Calcolo · Visualizzazione</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-number">02</div>
+        <h3 class="feature-title">Tabella Esposimetrica</h3>
+        <p class="feature-desc">Genera la combinazione diaframma/velocità per qualsiasi valore EV e sensibilità ISO. Calcolatore integrato per filtri ND con conversione automatica dei tempi.</p>
+        <span class="feature-tag">EV · ISO · Filtri ND</span>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-number">03</div>
+        <h3 class="feature-title">Calcolatore Reciprocità</h3>
+        <p class="feature-desc">Corregge i tempi di esposizione per 21 pellicole in bianco e nero applicando la formula Tc = Tm^P. Conto alla rovescia integrato per esposizioni notturne.</p>
+        <span class="feature-tag">21 pellicole · Countdown</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COME FUNZIONA -->
+<section>
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Come funziona</p>
+      <h2 class="section-title">Il Sistema Zonale<br>in tre passi</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <span class="step-num">— 01</span>
+        <h4 class="step-title">Misura la scena</h4>
+        <p class="step-desc">Esegui le letture esposimetriche sulle aree di ombre e luci della tua scena con un esposimetro spot.</p>
+      </div>
+      <div class="step reveal">
+        <span class="step-num">— 02</span>
+        <h4 class="step-title">Inserisci i valori</h4>
+        <p class="step-desc">Inserisci i valori EV misurati nell'app e scegli la modalità di esposizione desiderata.</p>
+      </div>
+      <div class="step reveal">
+        <span class="step-num">— 03</span>
+        <h4 class="step-title">Visualizza le zone</h4>
+        <p class="step-desc">L'app calcola l'esposizione ottimale e mostra graficamente dove cadono ombre e luci nella scala tonale.</p>
+      </div>
+      <div class="step reveal">
+        <span class="step-num">— 04</span>
+        <h4 class="step-title">Correggi la reciprocità</h4>
+        <p class="step-desc">Per esposizioni lunghe, calcola il tempo corretto per la tua pellicola e avvia il conto alla rovescia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRIVACY POLICY -->
+<section class="privacy-bg" id="privacy">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Privacy Policy</p>
+      <h2 class="section-title">Nessun dato raccolto</h2>
+      <p class="section-text">La tua privacy è importante. Ecco come gestiamo i dati.</p>
+    </div>
+    <div class="privacy-box reveal">
+      <p><strong>Raccolta dati:</strong> Calcolatore Sistema Zonale non raccoglie, non trasmette e non memorizza alcun dato personale. Tutti i calcoli vengono eseguiti localmente sul dispositivo dell'utente.</p>
+      <p><strong>Dati di utilizzo:</strong> L'app non utilizza analytics, tracker o servizi di terze parti che raccolgono dati sull'utilizzo.</p>
+      <p><strong>Permessi:</strong> L'app non richiede alcun permesso speciale del dispositivo. Non accede a fotocamera, microfono, posizione o contatti.</p>
+      <p><strong>Connessione internet:</strong> L'app funziona completamente offline. Non è richiesta alcuna connessione internet per il suo utilizzo.</p>
+      <p><strong>Contatti:</strong> Per qualsiasi domanda relativa alla privacy, puoi contattarci all'indirizzo email indicato nella scheda Google Play.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Calcolatore <em>Sistema Zonale</em></div>
+    <p class="footer-text">Versione 1.0 · Sviluppata per fotografi analogici · © 2026</p>
+    <p class="footer-text"><a href="#privacy" style="color:rgba(255,255,255,0.3);text-decoration:none;">Privacy Policy</a></p>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 100);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
