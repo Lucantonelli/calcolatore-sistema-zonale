@@ -113,9 +113,19 @@
     animation: fadeUp 0.8s ease 0.8s forwards;
   }
 
+  .hero-ctas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
   .hero-cta {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     background: var(--accent);
     color: var(--black);
@@ -126,9 +136,8 @@
     padding: 16px 32px;
     border-radius: 2px;
     text-decoration: none;
+    width: 260px;
     transition: background 0.2s, transform 0.2s;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 1s forwards;
   }
 
   .hero-cta:hover {
@@ -144,11 +153,12 @@
   .scroll-hint {
     position: absolute;
     bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     opacity: 0;
     animation: fadeUp 0.8s ease 1.4s forwards;
@@ -476,13 +486,15 @@
   <p class="hero-eyebrow">Fotografia Analogica · Sistema Zonale</p>
   <h1 class="hero-title">Calcolatore<br><em>Sistema Zonale</em></h1>
   <p class="hero-sub">Uno strumento completo per padroneggiare il Sistema Zonale di Ansel Adams. Calcola, converti e visualizza le zone tonali direttamente dal tuo smartphone.</p>
-  <a href="#" class="hero-cta">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>
-    Scarica su Google Play
-  </a>
-  <a href="guida.html" class="hero-cta" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);margin-top:12px;">
-    Guida all'utilizzo
-  </a>
+  <div class="hero-ctas">
+    <a href="#" class="hero-cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" fill="currentColor" stroke="none"/></svg>
+      Scarica su Google Play
+    </a>
+    <a href="guida.html" class="hero-cta" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);">
+      Guida all'utilizzo
+    </a>
+  </div>
   <div class="scroll-hint">
     <span>Scopri</span>
     <div class="scroll-line"></div>
