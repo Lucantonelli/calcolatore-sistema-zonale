@@ -1,1 +1,599 @@
 
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guida all'utilizzo — Calcolatore Sistema Zonale</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #141414;
+    --mid: #808080;
+    --light: #f0ede8;
+    --white: #fafaf8;
+    --accent: #c8a96e;
+    --accent2: #8b6f47;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --border: rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(10px);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo em { color: var(--accent); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO GUIDA */
+  .hero-guida {
+    background: var(--black);
+    padding: 140px 24px 80px;
+    text-align: center;
+  }
+
+  .hero-guida .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-guida h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .hero-guida h1 em { color: var(--accent); font-style: italic; }
+
+  .hero-guida p {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* INDICE */
+  .indice {
+    background: var(--light);
+    padding: 40px 24px;
+  }
+
+  .indice-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .indice-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: var(--white);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .indice-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .indice-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .indice-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* SEZIONE UTILITY */
+  .utility-section {
+    padding: 100px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .utility-section:nth-child(even) {
+    background: var(--light);
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .utility-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 60px;
+  }
+
+  .utility-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.06);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .utility-section:nth-child(even) .utility-num {
+    color: rgba(0,0,0,0.08);
+  }
+
+  .utility-header-text .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .utility-header-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 600;
+    color: var(--black);
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+
+  .utility-header-text p {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  /* STEPS */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .step-card {
+    background: var(--white);
+    padding: 32px 28px;
+  }
+
+  .utility-section:nth-child(even) .step-card {
+    background: var(--white);
+  }
+
+  .step-card-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .step-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 10px;
+  }
+
+  .step-card p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* NOTE BOX */
+  .note-box {
+    border-left: 2px solid var(--accent);
+    padding: 20px 24px;
+    background: rgba(200,169,110,0.06);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .note-box p {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .note-box strong {
+    color: var(--accent2);
+    font-weight: 500;
+  }
+
+  /* ZONE BAR DECORATIVA */
+  .zone-bar-deco {
+    display: flex;
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    max-width: 400px;
+  }
+
+  .zone-bar-deco span { flex: 1; }
+
+  /* PELLICOLE GRID */
+  .film-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 2px;
+    margin-top: 32px;
+  }
+
+  .film-item {
+    background: var(--white);
+    padding: 16px 18px;
+  }
+
+  .film-brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .film-name {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  /* BACK BUTTON */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    text-decoration: none;
+    margin-bottom: 60px;
+    transition: gap 0.2s;
+  }
+
+  .back-btn:hover { gap: 12px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark);
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+  }
+
+  .footer-logo em { color: var(--accent); font-style: italic; }
+
+  .footer-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 300;
+  }
+
+  /* REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .utility-header { flex-direction: column; gap: 8px; }
+    .utility-num { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Calcolatore <em>Sistema Zonale</em></a>
+  <ul class="nav-links">
+    <li><a href="#zone-system">Zone System</a></li>
+    <li><a href="#tabella">Tabella</a></li>
+    <li><a href="#reciprocita">Reciprocità</a></li>
+    <li><a href="index.html">Home</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero-guida">
+  <p class="eyebrow">Documentazione</p>
+  <h1>Guida all'<em>utilizzo</em></h1>
+  <p>Tutto quello che ti serve per usare al meglio le tre utility dell'app. Semplice, intuitivo, sempre a portata di mano.</p>
+</div>
+
+<!-- INDICE -->
+<div class="indice">
+  <div class="indice-inner">
+    <a href="#zone-system" class="indice-link">
+      <span class="indice-num">01</span>
+      <span class="indice-title">Calcolatore Sistema Zonale</span>
+    </a>
+    <a href="#tabella" class="indice-link">
+      <span class="indice-num">02</span>
+      <span class="indice-title">Tabella Esposimetrica</span>
+    </a>
+    <a href="#reciprocita" class="indice-link">
+      <span class="indice-num">03</span>
+      <span class="indice-title">Calcolatore Reciprocità</span>
+    </a>
+  </div>
+</div>
+
+<!-- SEZIONE 1 — ZONE SYSTEM -->
+<div class="utility-section" id="zone-system">
+  <div class="container">
+    <div class="utility-header reveal">
+      <div class="utility-num">01</div>
+      <div class="utility-header-text">
+        <p class="eyebrow">Prima utility</p>
+        <h2>Calcolatore Sistema Zonale</h2>
+        <p>Il cuore dell'app. Inserisci le letture esposimetriche di ombre e luci della tua scena e scegli come esporre. L'app calcola l'esposizione ottimale e visualizza graficamente la distribuzione tonale sulle 11 zone.</p>
+      </div>
+    </div>
+
+    <div class="zone-bar-deco reveal">
+      <span style="background:#000"></span><span style="background:#171717"></span>
+      <span style="background:#2e2e2e"></span><span style="background:#464646"></span>
+      <span style="background:#5d5d5d"></span><span style="background:#808080"></span>
+      <span style="background:#a3a3a3"></span><span style="background:#bababa"></span>
+      <span style="background:#d1d1d1"></span><span style="background:#e8e8e8"></span>
+      <span style="background:#ddd"></span>
+    </div>
+
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <p class="step-card-num">— 01</p>
+        <h4>Lettura EV ombre</h4>
+        <p>Seleziona il valore EV misurato sull'area più scura della scena che vuoi mantenere con dettaglio.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 02</p>
+        <h4>Lettura EV luci</h4>
+        <p>Seleziona il valore EV misurato sull'area più luminosa della scena che vuoi mantenere con dettaglio.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 03</p>
+        <h4>Scegli la modalità</h4>
+        <p>Tre modalità disponibili: Priorità Ombre, Priorità Luci o Media. Seleziona anche la zona tonale desiderata per l'area prioritaria.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 04</p>
+        <h4>Leggi il risultato</h4>
+        <p>L'app mostra il valore EV consigliato e indica in quale zona cadono gli estremi opposti della scena. La barra tonale visualizza graficamente la distribuzione.</p>
+      </div>
+    </div>
+
+    <div class="note-box reveal">
+      <p><strong>Modalità Priorità Ombre:</strong> l'esposizione viene calcolata per posizionare le ombre nella zona scelta. Le luci cadranno automaticamente nella zona corrispondente in base al range dinamico della scena.</p>
+    </div>
+    <br>
+    <div class="note-box reveal">
+      <p><strong>Range dinamico:</strong> se la differenza tra ombre e luci supera i 10 stop, l'app segnala che la scena eccede la latitudine di posa della pellicola. Considera l'uso di un filtro degradato o una diversa inquadratura.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 2 — TABELLA ESPOSIMETRICA -->
+<div class="utility-section" id="tabella">
+  <div class="container">
+    <div class="utility-header reveal">
+      <div class="utility-num">02</div>
+      <div class="utility-header-text">
+        <p class="eyebrow">Seconda utility</p>
+        <h2>Tabella Esposimetrica<br>e Filtri ND</h2>
+        <p>Genera istantaneamente tutte le combinazioni diaframma/velocità per un dato valore EV e sensibilità ISO. Include un calcolatore integrato per filtri ND con conversione automatica dei tempi lunghi.</p>
+      </div>
+    </div>
+
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <p class="step-card-num">— 01</p>
+        <h4>Seleziona EV e ISO</h4>
+        <p>Scegli il valore EV della scena e la sensibilità ISO della pellicola caricata.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 02</p>
+        <h4>Leggi la tabella</h4>
+        <p>L'app genera la tabella con tutte le combinazioni diaframma/velocità equivalenti, mostrando solo i valori praticabili per quella combinazione EV/ISO.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 03</p>
+        <h4>Calcola il filtro ND</h4>
+        <p>Apri il calcolatore ND integrato, seleziona il tempo di partenza e il filtro utilizzato. L'app calcola il tempo corretto con conversione automatica in minuti e secondi.</p>
+      </div>
+    </div>
+
+    <div class="note-box reveal">
+      <p><strong>Filtri ND supportati:</strong> ND2 (1 stop), ND4 (2 stop), ND8 (3 stop), ND64 (6 stop), ND400 (9 stop), ND1000 (10 stop), ND32000 (15 stop). I tempi risultanti vengono arrotondati automaticamente al valore standard più vicino.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SEZIONE 3 — RECIPROCITÀ -->
+<div class="utility-section" id="reciprocita">
+  <div class="container">
+    <div class="utility-header reveal">
+      <div class="utility-num">03</div>
+      <div class="utility-header-text">
+        <p class="eyebrow">Terza utility</p>
+        <h2>Calcolatore di Reciprocità</h2>
+        <p>Per esposizioni superiori a 1 secondo, la legge di reciprocità di Bunsen-Roscoe non è più valida. L'app applica la formula Tc = Tm^P specifica per ogni pellicola e avvia un conto alla rovescia per l'esposizione.</p>
+      </div>
+    </div>
+
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <p class="step-card-num">— 01</p>
+        <h4>Inserisci il tempo</h4>
+        <p>Digita il tempo di esposizione misurato in secondi — quello che ti indica l'esposimetro prima della correzione.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 02</p>
+        <h4>Scegli marca e pellicola</h4>
+        <p>Seleziona prima il produttore, poi la pellicola specifica. Il menu si aggiorna automaticamente mostrando solo le pellicole di quel brand.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 03</p>
+        <h4>Calcola la correzione</h4>
+        <p>L'app applica il fattore P specifico e mostra il tempo corretto in secondi o minuti/secondi, con note tecniche sulla pellicola selezionata.</p>
+      </div>
+      <div class="step-card">
+        <p class="step-card-num">— 04</p>
+        <h4>Avvia il countdown</h4>
+        <p>Premi il pulsante Cronometro per aprire il conto alla rovescia preimpostato con il tempo corretto. Start, Stop e Reset per gestire l'esposizione.</p>
+      </div>
+    </div>
+
+    <div class="note-box reveal">
+      <p><strong>Formula applicata:</strong> Tc = Tm^P, dove Tm è il tempo misurato, P è il fattore di reciprocità specifico della pellicola e Tc è il tempo corretto da impostare in camera.</p>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin-top:48px;margin-bottom:8px;" class="reveal">Pellicole supportate</h3>
+    <p style="font-size:14px;color:var(--text-muted);font-weight:300;margin-bottom:4px;" class="reveal">21 pellicole in bianco e nero dei principali produttori.</p>
+
+    <div class="film-grid reveal">
+      <div class="film-item"><p class="film-brand">Ilford</p><p class="film-name">Pan F Plus 50</p></div>
+      <div class="film-item"><p class="film-brand">Ilford</p><p class="film-name">FP4 125</p></div>
+      <div class="film-item"><p class="film-brand">Ilford</p><p class="film-name">HP5 400</p></div>
+      <div class="film-item"><p class="film-brand">Ilford</p><p class="film-name">Delta 100</p></div>
+      <div class="film-item"><p class="film-brand">Ilford</p><p class="film-name">Delta 400</p></div>
+      <div class="film-item"><p class="film-brand">Ilford</p><p class="film-name">Delta 3200</p></div>
+      <div class="film-item"><p class="film-brand">Kentmere</p><p class="film-name">Kentmere 100</p></div>
+      <div class="film-item"><p class="film-brand">Kentmere</p><p class="film-name">Kentmere 400</p></div>
+      <div class="film-item"><p class="film-brand">Kodak</p><p class="film-name">T-Max 100</p></div>
+      <div class="film-item"><p class="film-brand">Kodak</p><p class="film-name">T-Max 400</p></div>
+      <div class="film-item"><p class="film-brand">Kodak</p><p class="film-name">T-Max 3200</p></div>
+      <div class="film-item"><p class="film-brand">Kodak</p><p class="film-name">Tri-X 400</p></div>
+      <div class="film-item"><p class="film-brand">Fomapan</p><p class="film-name">Fomapan 100</p></div>
+      <div class="film-item"><p class="film-brand">Fomapan</p><p class="film-name">Fomapan 200</p></div>
+      <div class="film-item"><p class="film-brand">Fomapan</p><p class="film-name">Fomapan 400</p></div>
+      <div class="film-item"><p class="film-brand">Rollei</p><p class="film-name">RPX 25</p></div>
+      <div class="film-item"><p class="film-brand">Rollei</p><p class="film-name">RPX 100</p></div>
+      <div class="film-item"><p class="film-brand">Rollei</p><p class="film-name">RPX 400</p></div>
+      <div class="film-item"><p class="film-brand">Rollei</p><p class="film-name">Retro 80s</p></div>
+      <div class="film-item"><p class="film-brand">Rollei</p><p class="film-name">Retro 400s</p></div>
+      <div class="film-item"><p class="film-brand">Rollei</p><p class="film-name">Superpan 200</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Calcolatore <em>Sistema Zonale</em></div>
+    <p class="footer-text">Versione 1.0 · Sviluppata per fotografi analogici · © 2026</p>
+    <p class="footer-text"><a href="index.html" style="color:rgba(255,255,255,0.3);text-decoration:none;">← Torna alla home</a></p>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
